@@ -9,7 +9,5 @@ export default {
 </script>
 
 <template>
-  <h1>Настройка кофемашины</h1>
-
   <CoffeeMachineSettings />
 </template>

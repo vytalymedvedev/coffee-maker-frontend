@@ -8,16 +8,16 @@ export default {
     },
     value: {
       required: true,
-      type: [String, Number],
+      type: [String, Number]
     },
     name: {
       required: true,
-      type: String,
+      type: String
     }
   },
   computed: {
     isChecked() {
-      return this.option === this.value;
+      return this.option === this.value
     }
   }
 }

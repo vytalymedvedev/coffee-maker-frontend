@@ -10,18 +10,22 @@ export default {
 </script>
 
 <template>
-  <header>
-    <div class="wrapper">
-      <nav class="nav">
-        <RouterLink to="/" class="router-link">Настройка кофемашины</RouterLink>
-        <RouterLink to="/configs" class="router-link">Конфигурации</RouterLink>
-      </nav>
-    </div>
-  </header>
+  <div class="page-layout">
+    <header>
+      <div class="wrapper">
+        <nav class="nav">
+          <RouterLink to="/" class="router-link">Настройка кофемашины</RouterLink>
+          <RouterLink to="/configs" class="router-link">Конфигурации</RouterLink>
+        </nav>
+      </div>
+    </header>
 
-  <main class="main">
-    <RouterView />
-  </main>
+    <main>
+      <div class="main-content">
+        <RouterView />
+      </div>
+    </main>
+  </div>
 </template>
 
 <style scoped>
@@ -35,12 +39,16 @@ export default {
   font-size: 1rem;
 }
 
-.main {
+.main-content {
   padding: 2rem;
-  margin: 0 auto;
 }
 
 .router-link {
   text-decoration: none;
+}
+
+.page-layout {
+  max-width: 1280px;
+  margin: 0 auto;
 }
 </style>
