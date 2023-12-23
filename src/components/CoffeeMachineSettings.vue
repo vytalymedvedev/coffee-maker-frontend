@@ -1,19 +1,24 @@
 <script>
 import RadioButtonGroup from './RadioButtonGroup.vue'
+import BaseButton from './BaseButton.vue'
+import { postConfig } from '../api'
 
 const MACHINE_SIZES = ['стандарт', 'большая']
 
 export default {
   name: 'CoffeeMachineSettings',
   components: {
-    RadioButtonGroup
-  },
+    RadioButtonGroup,
+    BaseButton
+},
   data() {
     return {
       sizes: MACHINE_SIZES,
       selectedSize: MACHINE_SIZES[0],
       selectedDrinksAmount: 6,
-      drinks: [6, 8, 10]
+      drinks: [6, 8, 10],
+      showSaveButton: true,
+      submitSuccess: false,
     }
   },
   computed: {
@@ -32,6 +37,16 @@ export default {
     },
     setDrinksAmount(option) {
       this.selectedDrinksAmount = option
+    },
+    async submitConfig() {
+      this.showSaveButton = false;
+
+      try {
+        await postConfig(this.selectedSize, this.selectedDrinksAmount );
+        this.submitSuccess = true;
+      } catch (error) {
+        this.submitSuccess = false;
+      }
     }
   }
 }
@@ -44,7 +59,7 @@ export default {
       <img :src="imgSrc" alt="coffe machine" class="machine-img" />
     </div>
 
-    <form>
+    <form @submit.prevent="submitConfig">
       <div>
         <h2>Выберите размер кофемашины</h2>
         <RadioButtonGroup @change="setSize" :options="sizes" :value="selectedSize" name="sizes" />
@@ -59,6 +74,22 @@ export default {
           name="drinks"
           vertical
         />
+        <BaseButton v-if="showSaveButton" type="submit" class="form-button">
+          <template #text>
+            <span>Сохранить</span>
+          </template>
+        </BaseButton>
+
+        <div v-else class="message">
+          <span v-if="submitSuccess" class="textResult">Успешно сохранено!</span>
+          <span v-else class="textResult error">Ошибка!</span>
+          <BaseButton @click="showSaveButton = true">
+            <template v-slot:text>
+              <span>Попробовать ещё</span>
+            </template>
+          </BaseButton>
+        </div>
+        
       </div>
     </form>
   </div>
@@ -78,5 +109,23 @@ export default {
   .machine-settings {
     flex-direction: row;
   }
+}
+
+.form-button, .message {
+  margin-top: 2rem;
+}
+
+.message {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.textResult {
+  font-size: 20px;
+}
+
+.error {
+  color: 	#bf0000;
 }
 </style>
