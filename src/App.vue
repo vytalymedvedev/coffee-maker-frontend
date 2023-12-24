@@ -41,6 +41,7 @@ export default {
 
 .main-content {
   padding: 2rem;
+  padding-bottom: 0;
 }
 
 .router-link {

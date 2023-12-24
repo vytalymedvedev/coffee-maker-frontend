@@ -1,6 +1,7 @@
 <script>
 import RadioButtonGroup from './RadioButtonGroup.vue'
 import BaseButton from './BaseButton.vue'
+import BaseSpinner from './BaseSpinner.vue'
 import { postConfig } from '../api'
 
 const MACHINE_SIZES = ['стандарт', 'большая']
@@ -9,7 +10,8 @@ export default {
   name: 'CoffeeMachineSettings',
   components: {
     RadioButtonGroup,
-    BaseButton
+    BaseButton,
+    BaseSpinner
 },
   data() {
     return {
@@ -18,7 +20,8 @@ export default {
       selectedDrinksAmount: 6,
       drinks: [6, 8, 10],
       showSaveButton: true,
-      submitSuccess: false,
+      showSuccessMessage: false,
+      showErrorMessage: false,
     }
   },
   computed: {
@@ -38,14 +41,19 @@ export default {
     setDrinksAmount(option) {
       this.selectedDrinksAmount = option
     },
+    onClickRepeat() {
+      this.showSaveButton = true;
+      this.showSuccessMessage = false;
+      this.showErrorMessage = false;
+    },
     async submitConfig() {
       this.showSaveButton = false;
 
       try {
         await postConfig(this.selectedSize, this.selectedDrinksAmount );
-        this.submitSuccess = true;
+        this.showSuccessMessage = true;
       } catch (error) {
-        this.submitSuccess = false;
+        this.showErrorMessage = true;
       }
     }
   }
@@ -81,9 +89,14 @@ export default {
         </BaseButton>
 
         <div v-else class="message">
-          <span v-if="submitSuccess" class="textResult">Успешно сохранено!</span>
-          <span v-else class="textResult error">Ошибка!</span>
-          <BaseButton @click="showSaveButton = true">
+          <span v-if="showSuccessMessage">Успешно сохранено!</span>
+          <span v-else-if="showErrorMessage" class="error">Ошибка!</span>
+          <div v-else class="message">
+            <BaseSpinner />
+            <span>Сохранение...</span>
+          </div>
+
+          <BaseButton v-if="showSuccessMessage || showErrorMessage" @click="onClickRepeat">
             <template v-slot:text>
               <span>Попробовать ещё</span>
             </template>
@@ -103,6 +116,7 @@ export default {
 .machine-settings {
   display: flex;
   flex-direction: column;
+  gap: 2rem;
 }
 
 @media screen and (min-width: 768px) {
@@ -119,13 +133,10 @@ export default {
   display: flex;
   align-items: center;
   gap: 2rem;
-}
-
-.textResult {
   font-size: 20px;
 }
 
 .error {
-  color: 	#bf0000;
+  color: 	var(--error-text-color);
 }
 </style>

@@ -6,4 +6,9 @@
   --button-hover-color: #5f5f5f;
   --button-disabled-color: #a9a9a9;
   --button-active-color: #8d8d8d;
+
+  --spinner-track-color: #8d8d8d;
+  --spinner-segment-color: #424242;
+
+  --error-text-color: #bf0000;
 }

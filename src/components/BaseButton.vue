@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: 'ButtonPrimary',
+  name: 'BaseButton',
   props: {
     disabled: Boolean,
     type: {
