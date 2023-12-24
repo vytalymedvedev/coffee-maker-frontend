@@ -2,7 +2,6 @@
   <button
     :type="type"
     :disabled="disabled"
-    @click="$emit('click')"
     class="button"
   >
     <slot name="icon"/>
