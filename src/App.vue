@@ -45,7 +45,15 @@ export default {
 }
 
 .router-link {
+  padding: 1rem;
+  border-radius: 2rem;
+  border: 2px solid black;
+  color: black;
   text-decoration: none;
+}
+
+.router-link:visited {
+  color: black;
 }
 
 .page-layout {
